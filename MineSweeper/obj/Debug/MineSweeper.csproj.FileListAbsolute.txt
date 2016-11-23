@@ -5,3 +5,4 @@ c:\users\zackb\documents\visual studio 2015\Projects\MineSweeper\MineSweeper\obj
 c:\users\zackb\documents\visual studio 2015\Projects\MineSweeper\MineSweeper\obj\Debug\MineSweeper.csproj.GenerateResource.Cache
 c:\users\zackb\documents\visual studio 2015\Projects\MineSweeper\MineSweeper\obj\Debug\MineSweeper.exe
 c:\users\zackb\documents\visual studio 2015\Projects\MineSweeper\MineSweeper\obj\Debug\MineSweeper.pdb
+C:\Users\zackb\documents\visual studio 2015\Projects\MineSweeper\MineSweeper\obj\Debug\MineSweeper.Form1.resources

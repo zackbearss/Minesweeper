@@ -24,18 +24,24 @@ namespace MineSweeper
             this.random = random;
             ModifiedMineCount = mineCount;
 
-            //tiles = new List<List<Tile>>(height);
-            //foreach (Tile tile in tiles)
-            //{
-            //    tile.MouseClick += Tile_Click;
-            //}
-            
-            //add mines
-            List<List<int>> tempMineList;
-            DetermineMinesLocation(out tempMineList);
-            foreach(List<int> point in tempMineList)
+            tiles = new List<List<Tile>>();
+            for (int i = 0; i < height; i++)
             {
-                tiles[point[0], point[1]].Type = Tile.TileType.Mine;
+                List<Tile> tilesWidth = new List<Tile>();
+                for (int j = 0; j < width; j++)
+                {
+                    Tile tile = new Tile();
+                    tile.MouseClick += Tile_Click;
+                    tilesWidth.Add(tile);
+                }
+                tiles.Add(tilesWidth);
+            }
+
+            //add mines
+            List<Mine> tempMineList = DetermineMinesLocation();
+            foreach(Mine point in tempMineList)
+            {
+                tiles[point.X][point.Y].Type = Tile.TileType.Mine;
             }
         }
 
@@ -74,18 +80,20 @@ namespace MineSweeper
         /// Determines which locations will contain mines
         /// </summary>
         /// <param name="mineLocation">A container that will out the mine locations.</param>
-        void DetermineMinesLocation(out List<List<int>> mineLocation)
+        List<Mine> DetermineMinesLocation()
         {
-            mineLocation = new List<List<int>>();
+            List<Mine> mineLocation = new List<Mine>();
 
             while(mineLocation.Count != mineCount)
             {
-                List<int> place = new List<int>();
-                place.Add(random.Next(0, tileWidth));
-                place.Add(random.Next(0, tileHeight));
-                if (!mineLocation.Contains(place))
-                    mineLocation.Add(place);
+                Mine mine = new Mine();
+                mine.X = random.Next(0, tileWidth);
+                mine.Y = random.Next(0, tileHeight);
+                if (!mineLocation.Contains(mine))
+                    mineLocation.Add(mine);
             }
+
+            return mineLocation;
         }
 
         /// <summary>
@@ -96,7 +104,6 @@ namespace MineSweeper
         void UpdateBoard(Tile tile, Tile.TileStatus status)
         {
             //find surronding mine count - if mine count is 0, press other mines around it (recursion)
-
             if (tile.Update(status, surrondingMineCount) == 1)
             {
                 GameOver(false);
@@ -108,7 +115,19 @@ namespace MineSweeper
 
         int SurrondingMineCount(Tile tile)
         {
-           
+            int Xlocation;
+            int YLocation;
+
+            for (int i = 0; i < tileHeight; i++)
+            {
+                if(tiles[i].Contains(tile))
+                {
+                    YLocation = i;
+                    Xlocation = tiles[i].IndexOf(tile);
+                }
+            }
+
+
         }
 
         void GameOver(bool UserWon)
