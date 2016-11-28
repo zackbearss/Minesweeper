@@ -24,57 +24,65 @@ namespace MineSweeper
             this.random = random;
             ModifiedMineCount = mineCount;
 
-            tiles = new List<List<Tile>>();
-            for (int i = 0; i < height; i++)
-            {
-                List<Tile> tilesWidth = new List<Tile>();
-                for (int j = 0; j < width; j++)
-                {
-                    Tile tile = new Tile();
-                    tile.MouseClick += Tile_Click;
-                    tilesWidth.Add(tile);
-                }
-                tiles.Add(tilesWidth);
-            }
+			CreateTiles();
+			AddMines();
 
-            //add mines
-            List<Mine> tempMineList = DetermineMinesLocation();
-            foreach(Mine point in tempMineList)
-            {
-                tiles[point.X][point.Y].Type = Tile.TileType.Mine;
-            }
         }
 
-        private void Tile_Click(object sender, MouseEventArgs e)
-        {
-            Tile tile = sender as Tile;
-            Tile.TileStatus status = new Tile.TileStatus();
+		private void CreateTiles()
+		{
+			tiles = new List<List<Tile>>();
+			for (int i = 0; i < tileHeight; i++)
+			{
+				List<Tile> tilesWidth = new List<Tile>();
+				for (int j = 0; j < tileWidth; j++)
+				{
+					Tile tile = new Tile();
+					tile.ClickEvent += ClickHandler;
+					tilesWidth.Add(tile);
+				}
+				tiles.Add(tilesWidth);
+			}
+		}
 
-            //determine the new status of the tile
-            switch(e.Button) {
-                case MouseButtons.Left:
-                    if (tile.Status != Tile.TileStatus.Unpressed)
-                        return;
-                    status = Tile.TileStatus.Pressed;
-                    break;
-                case MouseButtons.Right:
-                    if (tile.Status == Tile.TileStatus.Pressed)
-                        return;
-                    else if (tile.Status == Tile.TileStatus.Unpressed)
-                    {
-                        status = Tile.TileStatus.Flagged;
-                        ModifiedMineCount--;
-                    }
-                    else if (tile.Status == Tile.TileStatus.Flagged)
-                    {
-                        status = Tile.TileStatus.Unpressed;
-                        ModifiedMineCount++;
-                    }
-                    break;
-            }
+		private void AddMines()
+		{
+			List<Mine> tempMineList = DetermineMinesLocation();
+			foreach (Mine point in tempMineList)
+			{
+				tiles[point.Y][point.X].Type = Tile.TileType.Mine;
+			}
+		}
 
-            UpdateBoard(tile, status);
-        }
+		private void ClickHandler(Tile tile, MouseButtons button)
+		{
+			Tile.TileStatus status = new Tile.TileStatus();
+			//determine the new status of the tile
+			switch (button)
+			{
+				case MouseButtons.Left:
+					if (tile.Status != Tile.TileStatus.Unpressed)
+						return;
+					status = Tile.TileStatus.Pressed;
+					break;
+				case MouseButtons.Right:
+					if (tile.Status == Tile.TileStatus.Pressed)
+						return;
+					else if (tile.Status == Tile.TileStatus.Unpressed)
+					{
+						status = Tile.TileStatus.Flagged;
+						ModifiedMineCount--;
+					}
+					else if (tile.Status == Tile.TileStatus.Flagged)
+					{
+						status = Tile.TileStatus.Unpressed;
+						ModifiedMineCount++;
+					}
+					break;
+			}
+
+			UpdateBoard(tile, status);
+		}
 
         /// <summary>
         /// Determines which locations will contain mines
@@ -112,8 +120,17 @@ namespace MineSweeper
                 return;
             }
 
-            //check if user selected last box
-        }
+			//check if user selected last box
+			//TODO: change name of function
+			if (surrondingMineCount > 0)
+				tile.DisplayNumber(surrondingMineCount);
+			else
+			{
+				tile.DisplayNumber(surrondingMineCount);
+				OpenSurrondingTiles(tile);
+			}
+
+		}
 
         int SurrondingMineCount(Tile tile)
         {
@@ -176,6 +193,56 @@ namespace MineSweeper
             return MineCount;
         }
 
+		void OpenSurrondingTiles(Tile tile)
+		{
+			int XLocation = 0;
+			int YLocation = 0;
+
+			for (int i = 0; i < tileHeight; i++)
+			{
+				if (tiles[i].Contains(tile))
+				{
+					YLocation = i;
+					XLocation = tiles[i].IndexOf(tile);
+				}
+			}
+
+			//check 8 surronding mines 
+			if (XLocation - 1 >= 0)
+			{
+				if (YLocation - 1 >= 0)
+				{
+					tiles[YLocation - 1][XLocation - 1].ClickEvent(tiles[YLocation - 1][XLocation - 1], MouseButtons.Left);
+				}
+				if (YLocation + 1 < tileHeight)
+				{
+					tiles[YLocation + 1][XLocation - 1].ClickEvent(tiles[YLocation + 1][XLocation - 1], MouseButtons.Left);
+				}
+				tiles[YLocation][XLocation - 1].ClickEvent(tiles[YLocation][XLocation - 1], MouseButtons.Left);
+			}
+			if (XLocation + 1 < tileWidth)
+			{
+				if (YLocation - 1 >= 0)
+				{
+					tiles[YLocation - 1][XLocation + 1].ClickEvent(tiles[YLocation - 1][XLocation + 1], MouseButtons.Left);
+				}
+				if (YLocation + 1 < tileHeight)
+				{
+					tiles[YLocation + 1][XLocation + 1].ClickEvent(tiles[YLocation + 1][XLocation + 1], MouseButtons.Left);
+				}
+				tiles[YLocation][XLocation + 1].ClickEvent(tiles[YLocation][XLocation + 1], MouseButtons.Left);
+			}
+
+			if (YLocation - 1 >= 0)
+			{
+				tiles[YLocation - 1][XLocation].ClickEvent(tiles[YLocation - 1][XLocation], MouseButtons.Left);
+			}
+			if (YLocation + 1 < tileHeight)
+			{
+				tiles[YLocation + 1][XLocation].ClickEvent(tiles[YLocation + 1][XLocation], MouseButtons.Left);
+			}
+		}
+
         void GameOver(bool UserWon)
         {
 
@@ -193,8 +260,9 @@ namespace MineSweeper
             {
                 for (int j = 0; j < tileWidth; j++)
                 {
-                    mineField.Controls.Add(tiles[i][j], j, i);
-                }
+                    mineField.Controls.Add(tiles[i][j].TileButton, j, i);
+					mineField.Controls.Add(tiles[i][j].TileLabel, j, i);
+				}
             }
         }
 

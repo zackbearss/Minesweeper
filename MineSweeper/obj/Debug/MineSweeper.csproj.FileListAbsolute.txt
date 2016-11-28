@@ -6,3 +6,11 @@ c:\users\zackb\documents\visual studio 2015\Projects\MineSweeper\MineSweeper\obj
 c:\users\zackb\documents\visual studio 2015\Projects\MineSweeper\MineSweeper\obj\Debug\MineSweeper.exe
 c:\users\zackb\documents\visual studio 2015\Projects\MineSweeper\MineSweeper\obj\Debug\MineSweeper.pdb
 C:\Users\zackb\documents\visual studio 2015\Projects\MineSweeper\MineSweeper\obj\Debug\MineSweeper.Form1.resources
+C:\Users\Zbearss\Documents\Minesweeper\MineSweeper\bin\Debug\MineSweeper.exe
+C:\Users\Zbearss\Documents\Minesweeper\MineSweeper\bin\Debug\MineSweeper.pdb
+C:\Users\Zbearss\Documents\Minesweeper\MineSweeper\obj\Debug\MineSweeper.csprojResolveAssemblyReference.cache
+C:\Users\Zbearss\Documents\Minesweeper\MineSweeper\obj\Debug\MineSweeper.Form1.resources
+C:\Users\Zbearss\Documents\Minesweeper\MineSweeper\obj\Debug\MineSweeper.Properties.Resources.resources
+C:\Users\Zbearss\Documents\Minesweeper\MineSweeper\obj\Debug\MineSweeper.csproj.GenerateResource.Cache
+C:\Users\Zbearss\Documents\Minesweeper\MineSweeper\obj\Debug\MineSweeper.exe
+C:\Users\Zbearss\Documents\Minesweeper\MineSweeper\obj\Debug\MineSweeper.pdb

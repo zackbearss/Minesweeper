@@ -36,20 +36,19 @@ namespace MineSweeper
             mineField = MineField;
             timer = new Timer();
 
-            timeDisplay.Text = "0";
+			timeElapsed = 0;
+			timeDisplay.Text = "0";
             mineDisplay.Text = "10";
 
-            SetDifficutly(Difficulty.Hard);
-
-            timeElapsed = 0;
+            SetDifficutly(Difficulty.Hard);   
 
             random = new Random();
-            timer.Tick += Timer_Tick;
             board = new Board(width, height, mineCount, random);
 
             CreateMineField();
 
-            timer.Interval = 1000;
+			timer.Tick += Timer_Tick;
+			timer.Interval = 1000;
             timer.Start();
         }
 
@@ -76,21 +75,22 @@ namespace MineSweeper
             {
                 case Difficulty.Easy:
                     mineCount = 10;
-                    width = height = 8;
-                    window.Height = 300;
-                    window.Width = 150;
+                    width = height = 9;
+                    window.Height = 293;
+                    window.Width = 203;
                     break;
                 case Difficulty.Medium:
                     mineCount = 40;
                     width = height = 16;
-                    window.Height = 400;
-                    window.Width = 300;
+                    window.Height = 465;
+                    window.Width = 341;
                     break;
                 case Difficulty.Hard:
                     mineCount = 99;
-                    width = height = 24;
-                    window.Height = 400;
-                    window.Width = 600;
+					width = 30;
+					height = 16;
+                    window.Height = 465;
+                    window.Width = 621;
                     break;
             }
         }
