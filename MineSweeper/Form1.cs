@@ -11,14 +11,13 @@ namespace MineSweeper
 {
     public partial class Form1 : Form
     {
+        Game game;
         public Form1()
         {
             InitializeComponent();
+
+            game = new Game(this, timerLabel, minesLabel, tableLayoutPanelMineField);
         }
 
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
     }
 }

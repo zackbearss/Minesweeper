@@ -104,6 +104,8 @@ namespace MineSweeper
         void UpdateBoard(Tile tile, Tile.TileStatus status)
         {
             //find surronding mine count - if mine count is 0, press other mines around it (recursion)
+            int surrondingMineCount = SurrondingMineCount(tile);
+            //todo: recursion
             if (tile.Update(status, surrondingMineCount) == 1)
             {
                 GameOver(false);
@@ -115,19 +117,63 @@ namespace MineSweeper
 
         int SurrondingMineCount(Tile tile)
         {
-            int Xlocation;
-            int YLocation;
+            int XLocation = 0;
+            int YLocation = 0;
+            int MineCount = 0;
 
             for (int i = 0; i < tileHeight; i++)
             {
                 if(tiles[i].Contains(tile))
                 {
                     YLocation = i;
-                    Xlocation = tiles[i].IndexOf(tile);
+                    XLocation = tiles[i].IndexOf(tile);
                 }
             }
 
+            //check 8 surronding mines 
+            if(XLocation - 1 >= 0)
+            {
+                if(YLocation - 1 >= 0)
+                {
+                    if (tiles[YLocation - 1][XLocation - 1].Type == Tile.TileType.Mine)
+                        MineCount++;
+                }
+                if(YLocation + 1 < tileHeight)
+                {
+                    if (tiles[YLocation + 1][XLocation - 1].Type == Tile.TileType.Mine)
+                        MineCount++;
+                }
+                if (tiles[YLocation][XLocation - 1].Type == Tile.TileType.Mine)
+                        MineCount++;
+            }
+            if(XLocation + 1 < tileWidth)
+            {
+                if (YLocation - 1 >= 0)
+                {
+                    if (tiles[YLocation - 1][XLocation + 1].Type == Tile.TileType.Mine)
+                        MineCount++;
+                }
+                if (YLocation + 1 < tileHeight)
+                {
+                    if (tiles[YLocation + 1][XLocation + 1].Type == Tile.TileType.Mine)
+                        MineCount++;
+                }
+                if (tiles[YLocation][XLocation + 1].Type == Tile.TileType.Mine)
+                    MineCount++;
+            }
 
+            if (YLocation - 1 >= 0)
+            {
+                if (tiles[YLocation - 1][XLocation].Type == Tile.TileType.Mine)
+                    MineCount++;
+            }
+            if (YLocation + 1 < tileHeight)
+            {
+                if (tiles[YLocation + 1][XLocation].Type == Tile.TileType.Mine)
+                    MineCount++;
+            }
+
+            return MineCount;
         }
 
         void GameOver(bool UserWon)
@@ -138,6 +184,18 @@ namespace MineSweeper
         void CheckBoxes()
         {
             //complicating recursion 
+        }
+
+        public void DrawBoard(TableLayoutPanel mineField)
+        {
+            //add buttons
+            for (int i = 0; i < tileHeight; i++)
+            {
+                for (int j = 0; j < tileWidth; j++)
+                {
+                    mineField.Controls.Add(tiles[i][j], j, i);
+                }
+            }
         }
 
     }

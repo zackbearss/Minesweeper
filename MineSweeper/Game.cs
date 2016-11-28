@@ -19,6 +19,8 @@ namespace MineSweeper
         Difficulty difficulty;
         Label timeDisplay;
         Label mineDisplay;
+        TableLayoutPanel mineField;
+        Form window;
         Timer timer;
         Random random;
         int width;
@@ -26,20 +28,35 @@ namespace MineSweeper
         int mineCount;
         int timeElapsed;
 
-        public Game()
+        public Game(Form Window, Label TimeDisplay, Label MineDisplay, TableLayoutPanel MineField)
         {
-            SetDifficutly(Difficulty.Easy);
+            window = Window;
+            timeDisplay = TimeDisplay;
+            mineDisplay = MineDisplay;
+            mineField = MineField;
+            timer = new Timer();
 
             timeDisplay.Text = "0";
             mineDisplay.Text = "10";
+
+            SetDifficutly(Difficulty.Hard);
+
+            timeElapsed = 0;
+
             random = new Random();
             timer.Tick += Timer_Tick;
             board = new Board(width, height, mineCount, random);
+
+            CreateMineField();
+
+            timer.Interval = 1000;
+            timer.Start();
         }
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            timeElapsed++;
+            timeDisplay.Text = timeElapsed.ToString();
         }
 
         public void NewGame()
@@ -60,16 +77,40 @@ namespace MineSweeper
                 case Difficulty.Easy:
                     mineCount = 10;
                     width = height = 8;
+                    window.Height = 300;
+                    window.Width = 150;
                     break;
                 case Difficulty.Medium:
                     mineCount = 40;
                     width = height = 16;
+                    window.Height = 400;
+                    window.Width = 300;
                     break;
                 case Difficulty.Hard:
                     mineCount = 99;
                     width = height = 24;
+                    window.Height = 400;
+                    window.Width = 600;
                     break;
             }
+        }
+
+        public void CreateMineField()
+        {
+            //create width
+            mineField.ColumnCount = width;
+            for(int i = 0; i < width; i++)
+            {
+                mineField.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            }
+            //create height
+            mineField.RowCount = height;
+            for (int i = 0; i < height; i++)
+            {
+                mineField.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            }
+
+            board.DrawBoard(mineField);
         }
 
     }
