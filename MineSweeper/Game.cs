@@ -34,23 +34,11 @@ namespace MineSweeper
             timeDisplay = TimeDisplay;
             mineDisplay = MineDisplay;
             mineField = MineField;
-            timer = new Timer();
 
-			timeElapsed = 0;
-			timeDisplay.Text = "0";
-            mineDisplay.Text = "10";
-
-            SetDifficutly(Difficulty.Hard);   
+            SetDifficutly(Difficulty.Easy);   
 
             random = new Random();
-            board = new Board(width, height, mineCount, random);
-            board.GameOver += GameOver;
-
-            CreateMineField();
-
-			timer.Tick += Timer_Tick;
-			timer.Interval = 1000;
-            timer.Start();
+            NewGame();
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -61,15 +49,33 @@ namespace MineSweeper
 
         public void NewGame()
         {
+            timer = new Timer();
+            timeElapsed = 0;
+            timeDisplay.Text = timeElapsed.ToString();
 
+            board = new Board(width, height, mineCount, random);
+            board.GameOver += GameOver;
+            board.GameStarted += GameStarted;
+
+            CreateMineField();
+
+            timer.Tick += Timer_Tick;
+            timer.Interval = 1000;
+        }
+
+        private void GameStarted()
+        {
+            timer.Start();
         }
 
         public void GameOver(bool DidUserWin)
         {
+            timer.Stop();
             if (DidUserWin)
                 MessageBox.Show("You won!", "Game Over");
             else
                 MessageBox.Show("You lose!", "Game Over");
+            NewGame();
         }
 
         public void SetDifficutly(Difficulty diff)
@@ -101,6 +107,11 @@ namespace MineSweeper
 
         public void CreateMineField()
         {
+            //clear everything that was there
+            mineField.Controls.Clear();
+            mineField.RowStyles.Clear();
+            mineField.ColumnStyles.Clear();
+
             //create width
             mineField.ColumnCount = width;
             for(int i = 0; i < width; i++)

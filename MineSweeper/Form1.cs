@@ -19,5 +19,27 @@ namespace MineSweeper
             game = new Game(this, timerLabel, minesLabel, tableLayoutPanelMineField);
         }
 
+        private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            game.NewGame();
+        }
+
+        private void easyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            game.SetDifficutly(Game.Difficulty.Easy);
+            game.NewGame();
+        }
+
+        private void mediumToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            game.SetDifficutly(Game.Difficulty.Medium);
+            game.NewGame();
+        }
+
+        private void hardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            game.SetDifficutly(Game.Difficulty.Hard);
+            game.NewGame();
+        }
     }
 }

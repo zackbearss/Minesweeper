@@ -9,17 +9,20 @@ namespace MineSweeper
     class Board
     {
         internal Action<bool> GameOver;
+        internal Action GameStarted;
 
         List<List<Tile>> tiles;
         int mineCount;
         int tileWidth;
         int tileHeight;
         public int ModifiedMineCount { get; set; }
+        bool HasGameStarted;
 
         Random random;
 
         public Board(int width, int height, int mineCount, Random random)
         {
+            HasGameStarted = false;
             tileWidth = width;
             tileHeight = height;
             this.mineCount = mineCount;
@@ -28,7 +31,6 @@ namespace MineSweeper
 
 			CreateTiles();
 			AddMines();
-
         }
 
 		private void CreateTiles()
@@ -59,6 +61,11 @@ namespace MineSweeper
 		private void ClickHandler(Tile tile, MouseButtons button)
 		{
 			Tile.TileStatus status = new Tile.TileStatus();
+            if(!HasGameStarted)
+            {
+                HasGameStarted = true;
+                GameStarted();
+            }
 			//determine the new status of the tile
 			switch (button)
 			{
