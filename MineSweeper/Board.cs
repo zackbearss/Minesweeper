@@ -8,6 +8,8 @@ namespace MineSweeper
 {
     class Board
     {
+        internal Action<bool> GameOver;
+
         List<List<Tile>> tiles;
         int mineCount;
         int tileWidth;
@@ -122,14 +124,8 @@ namespace MineSweeper
 
 			//check if user selected last box
 			//TODO: change name of function
-			if (surrondingMineCount > 0)
-				tile.DisplayNumber(surrondingMineCount);
-			else
-			{
-				tile.DisplayNumber(surrondingMineCount);
+			if (surrondingMineCount == 0)
 				OpenSurrondingTiles(tile);
-			}
-
 		}
 
         int SurrondingMineCount(Tile tile)
@@ -242,16 +238,6 @@ namespace MineSweeper
 				tiles[YLocation + 1][XLocation].ClickEvent(tiles[YLocation + 1][XLocation], MouseButtons.Left);
 			}
 		}
-
-        void GameOver(bool UserWon)
-        {
-
-        }
-
-        void CheckBoxes()
-        {
-            //complicating recursion 
-        }
 
         public void DrawBoard(TableLayoutPanel mineField)
         {

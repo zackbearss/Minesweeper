@@ -44,6 +44,7 @@ namespace MineSweeper
 
             random = new Random();
             board = new Board(width, height, mineCount, random);
+            board.GameOver += GameOver;
 
             CreateMineField();
 
@@ -63,9 +64,12 @@ namespace MineSweeper
 
         }
 
-        public void GameOver()
+        public void GameOver(bool DidUserWin)
         {
-
+            if (DidUserWin)
+                MessageBox.Show("You won!", "Game Over");
+            else
+                MessageBox.Show("You lose!", "Game Over");
         }
 
         public void SetDifficutly(Difficulty diff)

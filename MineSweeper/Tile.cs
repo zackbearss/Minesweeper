@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -36,9 +37,12 @@ namespace MineSweeper
 			TileLabel = new Label();
 
 			TileLabel.Visible = false;
-			TileLabel.Width = 20;
-			TileLabel.Height = 20;
-			TileLabel.Dock = DockStyle.Fill;
+			TileLabel.Width = 10;
+			TileLabel.Height = 10;
+            TileLabel.AutoSize = false;
+            TileLabel.Font = new Font(TileLabel.Font.FontFamily, 8);
+            TileLabel.TextAlign = ContentAlignment.MiddleCenter;
+            TileLabel.Dock = DockStyle.Fill;
 
 			TileButton.Width = 20;
 			TileButton.Height = 20;
@@ -65,6 +69,7 @@ namespace MineSweeper
                     if(Type == TileType.Empty)
                     {
                         //update number on tile with surrongMinesCount
+                        DisplayNumber(surrondingMinesCount);
                         return 0;
                     }
                     else
@@ -113,7 +118,7 @@ namespace MineSweeper
 			}
 			TileButton.Visible = false;
 			TileLabel.Visible = true;
-			TileLabel.Text = number.ToString();
+			TileLabel.Text = (number != 0) ? number.ToString() : "";
 		}
 
 		public void DisplayFlag()
