@@ -15,7 +15,8 @@ namespace MineSweeper
         int mineCount;
         int tileWidth;
         int tileHeight;
-        public int ModifiedMineCount { get; set; }
+        int tilesPressed;   //counting tiles pressed
+        public int ModifiedMineCount { get; set; }  //counting flags 
         bool HasGameStarted;
 
         Random random;
@@ -28,6 +29,7 @@ namespace MineSweeper
             this.mineCount = mineCount;
             this.random = random;
             ModifiedMineCount = mineCount;
+            tilesPressed = 0;
 
 			CreateTiles();
 			AddMines();
@@ -73,6 +75,7 @@ namespace MineSweeper
 					if (tile.Status != Tile.TileStatus.Unpressed)
 						return;
 					status = Tile.TileStatus.Pressed;
+                    tilesPressed++;
 					break;
 				case MouseButtons.Right:
 					if (tile.Status == Tile.TileStatus.Pressed)
@@ -133,6 +136,8 @@ namespace MineSweeper
 			//TODO: change name of function
 			if (surrondingMineCount == 0)
 				OpenSurrondingTiles(tile);
+            if ((tileWidth * tileHeight) - mineCount == tilesPressed)
+                GameOver(true);
 		}
 
         int SurrondingMineCount(Tile tile)

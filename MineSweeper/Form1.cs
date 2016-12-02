@@ -16,6 +16,10 @@ namespace MineSweeper
         {
             InitializeComponent();
 
+            //Type tp = minesLabel.GetType().BaseType;
+            //System.Reflection.PropertyInfo pi = tp.GetProperty("DoubleBuffered", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            //pi.SetValue(minesLabel, true, null);
+
             game = new Game(this, timerLabel, minesLabel, tableLayoutPanelMineField);
         }
 

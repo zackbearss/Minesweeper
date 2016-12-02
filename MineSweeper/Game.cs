@@ -72,7 +72,7 @@ namespace MineSweeper
         {
             timer.Stop();
             if (DidUserWin)
-                MessageBox.Show("You won!", "Game Over");
+                MessageBox.Show("You won!", "Congratulations");
             else
                 MessageBox.Show("You lose!", "Game Over");
             NewGame();
